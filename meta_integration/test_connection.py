@@ -25,8 +25,6 @@ def test_connection():
         issues.append("META_ACCESS_TOKEN is not set")
     if not settings.meta_page_id:
         issues.append("META_PAGE_ID is not set")
-    if not settings.instagram_business_account_id:
-        issues.append("INSTAGRAM_BUSINESS_ACCOUNT_ID is not set")
 
     if issues:
         print("   MISSING CONFIG:")
@@ -36,6 +34,8 @@ def test_connection():
         print("   See docs/SETUP_GUIDE.md for instructions.")
         return False
 
+    if not settings.instagram_business_account_id:
+        print("   Note: INSTAGRAM_BUSINESS_ACCOUNT_ID not set (Instagram features disabled)")
     print("   Config OK")
 
     # Test Graph API
@@ -59,14 +59,17 @@ def test_connection():
         print(f"   FAILED: {e}")
 
     # Test Instagram
-    print("\n[4] Testing Instagram access...")
-    try:
-        ig = InstagramAPI()
-        account = ig.get_account_info()
-        print(f"   Account: @{account.get('username', 'Unknown')}")
-        print(f"   Followers: {account.get('followers_count', 'N/A')}")
-    except Exception as e:
-        print(f"   FAILED: {e}")
+    if settings.instagram_business_account_id:
+        print("\n[4] Testing Instagram access...")
+        try:
+            ig = InstagramAPI()
+            account = ig.get_account_info()
+            print(f"   Account: @{account.get('username', 'Unknown')}")
+            print(f"   Followers: {account.get('followers_count', 'N/A')}")
+        except Exception as e:
+            print(f"   FAILED: {e}")
+    else:
+        print("\n[4] Instagram: Skipped (not configured)")
 
     print("\n" + "=" * 50)
     print("Connection test complete!")
