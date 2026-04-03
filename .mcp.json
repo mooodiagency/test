@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "meta-integration": {
-      "command": "python",
+      "command": "/Users/khalidkarmoudi/Claude/Meta/venv/bin/python",
       "args": ["-m", "meta_integration.mcp_server.server"],
-      "cwd": "."
+      "cwd": "/Users/khalidkarmoudi/Claude/Meta"
     }
   }
 }
